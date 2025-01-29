@@ -7,12 +7,12 @@ import Newbalance from "./pages/newbalance";
 import Adidas from "./pages/adidas";
 import Nike from "./pages/nike";
 import Puma from "./pages/puma";
-import Allproduct from "./pages/allproduct";
 import Cart from "./pages/cart";
 import Order from "./pages/order";
-import { CartProvider } from "./pages/cartContext";  
-import Checkout from './pages/checkout';
-import StripeProvider from './pages/StripeProvider'; 
+import Checkout from "./pages/checkout";
+import {OrderConfirmation} from "./pages/OrderConfirmation"; // Import the new component
+import { CartProvider } from "./pages/cartContext";
+import StripeProvider from "./pages/StripeProvider";
 
 function App() {
   // Define the routes using createBrowserRouter
@@ -38,10 +38,6 @@ function App() {
       element: <Order />,
     },
     {
-      path: "/allproduct",
-      element: <Allproduct />,
-    },
-    {
       path: "/nike",
       element: <Nike />,
     },
@@ -60,6 +56,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/order-confirmation",
+      element: <OrderConfirmation />, // Add route for OrderConfirmation
     },
   ]);
 

@@ -7,12 +7,18 @@ const Adidas = () => {
   const { addToCart } = useCart();  // Access the addToCart function from context
 
   const [buttonText, setButtonText] = useState("Add to Cart"); // State for button text
+  const [selectedSize, setSelectedSize] = useState(null); // State for selected size
 
   const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
     const item = {
       name: "FORUM LOW CL 'CORE WHITE/ROYAL BLUE'",
-      price: "10,999.00",
+      price: 10999,
       image: '/images/10.jpg',
+      size: selectedSize,
     };
     addToCart(item);  // Add the item to the cart
     setButtonText("Added!"); // Change button text after adding to cart
@@ -41,8 +47,8 @@ const Adidas = () => {
         </div>
 
         {/* Navigation Bar */}
-        <div className="flex justify-between items-center bg-white p-3 pl-5 pr-15 mt-10 ml-5 mr-5">
-          <img src="/images/0.1.png" alt="Logo" className="w-16 h-auto" onClick={()=>navigate('/')} />
+        <div className="flex justify-between items-center bg-white p-3 pl-5 pr-5 mt-10 ml-5 mr-5">
+          <img src="/images/0.1.png" alt="Logo" className="w-16 h-auto cursor-pointer" onClick={()=>navigate('/')} />
           <div className="hidden md:flex space-x-8 text-lg font-medium">
             <p className="cursor-pointer hover:opacity-50">New & Featured</p>
             <p className="cursor-pointer hover:opacity-50">Men</p>
@@ -69,42 +75,60 @@ const Adidas = () => {
       </header>
 
       {/* Product Section */}
-      <section className="relative">
-        <img src="/images/10.jpg" className="h-96 w-96 mt-10 ml-15" alt="Adidas Forum Low" />
-        <div className="absolute top-0 left-4 text-left ml-135">
-          <p className="mb-2 text-gray-800">Adidas Originals</p>
-          <p className="font-bold">FORUM LOW CL 'CORE WHITE/ROYAL BLUE'</p>
-          <p className="text-sm text-gray-800">10,999.00</p>
-          <p className="text-gray-800">MRP inclusive of all taxes</p>
-          <p className="mr-30 mt-5 text-gray-800">
-            Basketball-inspired shoes with minimalist design. This pair of adidas Forum Low CL shoes gives you the perfect balance of laid-back and retro style. You have nonstop comfort, thanks to a premium leather upper and soft textile lining. These versatile shoes are a wardrobe staple.
-          </p>
-          <ul className="list-disc list-inside space-y-2 text-gray-800 pl-6 mt-2 mr-8">
-            <li>Regular fit</li>
-            <li>Lace closure</li>
-            <li>Leather upper</li>
-            <li>Textile lining</li>
-            <li>Rubber cupsole</li>
-            <li>Imported</li>
-          </ul>
-          <p className="font-bold mt-5">Product Details - </p>
+      <section className="relative p-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center">
+          <img src="/images/10.jpg" className="h-96 w-96 mt-10 lg:mt-0 lg:ml-15" alt="Adidas Forum Low" />
+          <div className="lg:ml-10 mt-6 lg:mt-0">
+            <p className="mb-2 text-gray-800">Adidas Originals</p>
+            <p className="font-bold">FORUM LOW CL 'CORE WHITE/ROYAL BLUE'</p>
+            <p className="text-sm text-gray-800">₹10,999.00</p>
+            <p className="text-gray-800">MRP inclusive of all taxes</p>
+            <p className="mt-5 text-gray-800">
+              Basketball-inspired shoes with minimalist design. This pair of adidas Forum Low CL shoes gives you the perfect balance of laid-back and retro style. You have nonstop comfort, thanks to a premium leather upper and soft textile lining. These versatile shoes are a wardrobe staple.
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-gray-800 pl-6 mt-2 mr-8">
+              <li>Regular fit</li>
+              <li>Lace closure</li>
+              <li>Leather upper</li>
+              <li>Textile lining</li>
+              <li>Rubber cupsole</li>
+              <li>Imported</li>
+            </ul>
+            <p className="font-bold mt-5">Product Details - </p>
 
-          <button
-            className="bg-black text-white px-40 py-2 rounded-lg hover:bg-gray-800 active:bg-gray-600"
-            onClick={handleAddToCart} // Handle the add to cart click
-          >
-            {buttonText}
-          </button>
+            <div className="mt-4">
+              <label className="block text-gray-700">Select Size (UK):</label>
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="mt-2 p-2 border rounded-lg"
+              >
+                <option value="">Select Size</option>
+                {[...Array(9)].map((_, i) => (
+                  <option key={i} value={i + 3}>
+                    UK {i + 3}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              className="bg-black text-white px-10 py-2 rounded-lg hover:bg-gray-800 active:bg-gray-600 mt-4"
+              onClick={handleAddToCart} // Handle the add to cart click
+            >
+              {buttonText}
+            </button>
+          </div>
         </div>
       </section>
 
       {/* You May Also Like */}
-      <section>
+      <section className="p-6">
         <p className="mt-5 ml-5 font-bold">You may also like</p>
-        <div className="flex justify-between items-center">
-          <img src='/images/1.jpg' className='mt-3 ml-3' alt="Product 1" key="image1" />
-          <img src='/images/26.jpg' className='mt-3 h-85 w-95' alt="Product 2" key="image2" />
-          <img src='/images/24.jpg' className='mt-3 h-85 w-95 mr-3' alt="Product 3" key="image3" />
+        <div className="flex flex-wrap justify-between items-center">
+          <img src='/images/1.jpg' className='mt-3 ml-3 h-48 w-48 object-cover' alt="Product 1" key="image1" />
+          <img src='/images/26.jpg' className='mt-3 h-48 w-48 object-cover' alt="Product 2" key="image2" />
+          <img src='/images/24.jpg' className='mt-3 h-48 w-48 object-cover mr-3' alt="Product 3" key="image3" />
         </div>
       </section>
 
@@ -154,12 +178,12 @@ const Adidas = () => {
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-700 mt-4 px-10 py-4 flex justify-between items-center">
+        <div className="border-t border-gray-700 mt-4 px-10 py-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-4">
             <img src="/images/india.png" alt="India" className="w-6 h-4" />
             <span>INDIA</span>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 mt-4 md:mt-0">
             <img src="/images/visa.png" alt="Visa" className="w-8 h-5" />
             <img src="/images/master.png" alt="Amex" className="w-8 h-5" />
             <img src="/images/upi.png" alt="UPI" className="w-8 h-5" />

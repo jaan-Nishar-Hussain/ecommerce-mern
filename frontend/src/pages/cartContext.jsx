@@ -12,6 +12,11 @@ export const CartProvider = ({ children }) => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  const [orderHistory, setOrderHistory] = useState(() => {
+    const savedOrders = localStorage.getItem("orderHistory");
+    return savedOrders ? JSON.parse(savedOrders) : [];
+  });
+
   // Add a new item or increase quantity if it exists
   const addToCart = (item) => {
     setCart((prevCart) => {
@@ -70,6 +75,22 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
+  // Save the completed order to order history
+  const completeOrder = () => {
+    if (cart.length > 0) {
+      const newOrder = {
+        id: Date.now(),
+        items: cart,
+        orderDate: new Date().toLocaleDateString(),
+        status: "Processing",
+      };
+      const newOrderHistory = [...orderHistory, newOrder];
+      setOrderHistory(newOrderHistory);
+      localStorage.setItem("orderHistory", JSON.stringify(newOrderHistory));
+      clearCart(); // Clear the cart after an order is placed
+    }
+  };
+
   // Calculate total price of the cart based on quantities
   const calculateTotal = () => {
     return cart.reduce((total, item) => {
@@ -85,11 +106,13 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cart,
+        orderHistory, // Provide the order history
         addToCart,
         increaseQuantity,
         decreaseQuantity,
         removeFromCart,
         clearCart,
+        completeOrder, // Method to complete the order
         calculateTotal,
       }}
     >

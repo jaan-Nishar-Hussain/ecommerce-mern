@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const Checkout = () => {
-  const { cart, calculateTotal, clearCart } = useCart();
+  const { cart, calculateTotal, completeOrder } = useCart();
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -19,8 +19,8 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
-  const [orderSuccess, setOrderSuccess] = useState(false);
 
+  // Fetch Stripe client secret if "Card" is selected
   useEffect(() => {
     const fetchClientSecret = async () => {
       const response = await fetch("http://localhost:3000/create-payment-intent", {
@@ -59,7 +59,7 @@ const Checkout = () => {
 
     if (paymentMethod === "COD") {
       alert("Order placed successfully with Cash on Delivery.");
-      clearCart(); // Clear the cart after successful order
+      completeOrder(); // Save the order details
       navigate("/order-confirmation");
     } else if (paymentMethod === "Card") {
       setLoading(true);
@@ -82,32 +82,12 @@ const Checkout = () => {
         alert(error.message);
       } else if (paymentIntent.status === "succeeded") {
         alert("Order placed successfully with Card payment.");
-        clearCart(); // Clear the cart after successful order
+        completeOrder(); // Save the order details
+        setFormData({ name: "", email: "", address: "", phone: "" }); // Reset form
         navigate("/order-confirmation");
       }
     }
   };
-
-  if (orderSuccess) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen p-6 bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h1 className="text-4xl font-bold text-green-500">🎉 Order Successful!</h1>
-          <p className="text-gray-600 mt-4">
-            Thank you for your purchase, <strong>{formData.name}</strong>! Your order is on its way.
-          </p>
-          <div className="mt-8">
-            <button
-              onClick={() => navigate("/")}
-              className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
-            >
-              Continue to Shopping
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="p-6">
@@ -115,7 +95,7 @@ const Checkout = () => {
       {cart.length === 0 ? (
         <p className="text-gray-500 mt-4">Your cart is empty. Please add items to proceed.</p>
       ) : (
-        <div>
+        <div className="max-w-3xl mx-auto">
           <div className="space-y-6 mt-4">
             <div className="flex justify-between text-lg font-bold">
               <p>Total Price:</p>
@@ -202,7 +182,7 @@ const Checkout = () => {
                 className="w-full py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600"
                 disabled={loading}
               >
-                {loading ? "Processing..." : "Pay Now"}
+                {loading ? "Processing..." : "Place Order"}
               </button>
             </div>
           </div>

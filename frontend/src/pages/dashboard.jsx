@@ -51,8 +51,13 @@ function Dashboard() {
         </div>
 
         {/* Navigation Bar */}
-        <div className="flex justify-between items-center bg-white p-3 pl-5 pr-15 mt-10 ml-5 mr-5">
-          <img src="/images/0.1.png" alt="Logo" className="w-16 h-auto" />
+        <div className="flex justify-between items-center bg-white p-3 pl-5 pr-5 mt-10 ml-5 mr-5">
+          <img
+            src="/images/0.1.png"
+            alt="Logo"
+            className="w-16 h-auto cursor-pointer"
+            onClick={() => navigate("/")}
+          />
           <div className="hidden md:flex space-x-8 text-lg font-medium">
             <p className="cursor-pointer hover:opacity-50">New & Featured</p>
             <p className="cursor-pointer hover:opacity-50">Men</p>
@@ -129,8 +134,7 @@ function Dashboard() {
         <p className="text-sm md:text-lg mt-4">
           Our name, “VegNonVeg” is an amalgamation of two completely opposite
           words. At its core, it represents the coming together of different
-          perspectives or tastes bound together by the love for sneakers &
-          street culture.
+          perspectives or tastes bound together by the love for sneakers & street culture.
         </p>
         <button
           className="mt-6 px-4 md:px-6 py-2 bg-black text-white rounded-full hover:opacity-70 active:opacity-50"
@@ -269,22 +273,16 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-700 mt-4 px-10 py-4 flex justify-between items-center">
-          {/* Country and Payment Section */}
+        <div className="border-t border-gray-700 mt-4 px-10 py-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-4">
             <img src="/images/india.png" alt="India" className="w-6 h-4" />
             <span>INDIA</span>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 mt-4 md:mt-0">
             <img src="/images/visa.png" alt="Visa" className="w-8 h-5" />
-            
             <img src="/images/master.png" alt="Amex" className="w-8 h-5" />
             <img src="/images/upi.png" alt="UPI" className="w-8 h-5" />
-            <img
-              src="/images/rupay.png"
-              alt="RuPay"
-              className="w-8 h-5"
-            />
+            <img src="/images/rupay.png" alt="RuPay" className="w-8 h-5" />
           </div>
         </div>
         <div className="text-center text-xs mt-4">
